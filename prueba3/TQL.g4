@@ -4,7 +4,7 @@ grammar TQL;
  * Parser Rules
  */
 
-program				: line+ EOF ;
+program				: line+ ;
 
 line				: create_query
                     | add_query
@@ -17,35 +17,35 @@ line				: create_query
 
 create_query        : CREATE TOURNAMENT name specifications?;
 specifications  	: attributes ( WITH INTEGER PARTICIPANT )? list?;
-attributes           : '(' WORD ( ',' WORD )* ')';
+attributes          : '(' WORD ( ',' WORD )* ')';
 
-add_query           : ADD PARTICIPANT TO identifier ( name | list);
-list                : '[' name ( ',' name )* ']';
+add_query           : ADD PARTICIPANT TO t_identifier ( name | list);
 
-delete_query        : DELETE ( WORD | attributes | list) FROM identifier;
+delete_query        : DELETE ( WORD | attributes | list) FROM t_identifier;
 
-modify_query        : MODIFY PARTICIPANT ( WORD | INTEGER) FROM identifier '{' pair ( ',' pair )* '}';
+modify_query        : MODIFY PARTICIPANT ( WORD | INTEGER) FROM t_identifier '{' pair ( ',' pair )* '}';
 
-pair                : WORD ':' dtype;
+organize_query      : ORGANIZE TOURNAMENT t_identifier BY WORD ;
 
-organize_query      : ORGANIZE TOURNAMENT identifier BY WORD ;
+report_query        : REPORT a_identifier OF p_identifier FROM t_identifier ;
 
-report_query        : REPORT  identifier  OF identifier  FROM identifier ;
-
-show_query          : SHOW;
+show_query          : SHOW ( PHASE | SUMMARY ) ( OF p_identifier )? FROM t_identifier;
 
 dtype               : WORD
                     | INTEGER
                     | list
                     ;
 
+pair                : WORD ':' dtype;
+list                : '[' name ( ',' name )* ']';
+
+a_identifier        : WORD;
+t_identifier        : STRING | WORD;
+p_identifier        : STRING | WORD;
+
 identifier          : WORD;
-name				: WORD ( '(' abbr ')' )?;
+name				: STRING ( '(' abbr ')' )?;
 abbr                : WORD;
-
-
-
-
 					 					
 
 
@@ -97,10 +97,11 @@ MATCH               : M A T C H;
 OF                  : O F;
 ID                  : I D;
 SHOW                : S H O W;
+PHASE               : P H A S E;
+SUMMARY             : S U M M A R Y;
 
+STRING              :'"' ~["]+ '"';
 WORD				: (LOWERCASE | UPPERCASE)(LOWERCASE | UPPERCASE| DIGIT | '_')* ;
 INTEGER             : DIGIT+;
 
 WHITESPACE			: [\t\r\n ]+ -> skip ;
-
-NEWLINE				: ('\r'? '\n' | '\r')+ ;

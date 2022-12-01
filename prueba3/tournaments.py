@@ -5,9 +5,11 @@ class Tournament:
 
     name=''
     teams=set({})
+    attributes=[]
+    databasePath=''
 
-
-    def __init__(self, name):
+    def __init__(self, name, attributes, teams):
+        
         self.name=name
         
     def addTeams(self,list):
@@ -40,10 +42,6 @@ class DoubleElimination(Tournament):
     def show(self):
         return super().show()
 
-
-class DoubleElimination(Tournament):
-    def organize(self):
-        return super().organize()
 
 
 class RoundRobin(Tournament):

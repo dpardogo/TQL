@@ -62,15 +62,6 @@ class TQLListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TQLParser#list.
-    def enterList(self, ctx:TQLParser.ListContext):
-        pass
-
-    # Exit a parse tree produced by TQLParser#list.
-    def exitList(self, ctx:TQLParser.ListContext):
-        pass
-
-
     # Enter a parse tree produced by TQLParser#delete_query.
     def enterDelete_query(self, ctx:TQLParser.Delete_queryContext):
         pass
@@ -86,15 +77,6 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#modify_query.
     def exitModify_query(self, ctx:TQLParser.Modify_queryContext):
-        pass
-
-
-    # Enter a parse tree produced by TQLParser#pair.
-    def enterPair(self, ctx:TQLParser.PairContext):
-        pass
-
-    # Exit a parse tree produced by TQLParser#pair.
-    def exitPair(self, ctx:TQLParser.PairContext):
         pass
 
 
@@ -131,6 +113,51 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#dtype.
     def exitDtype(self, ctx:TQLParser.DtypeContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#pair.
+    def enterPair(self, ctx:TQLParser.PairContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#pair.
+    def exitPair(self, ctx:TQLParser.PairContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list.
+    def enterList(self, ctx:TQLParser.ListContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list.
+    def exitList(self, ctx:TQLParser.ListContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#a_identifier.
+    def enterA_identifier(self, ctx:TQLParser.A_identifierContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#a_identifier.
+    def exitA_identifier(self, ctx:TQLParser.A_identifierContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#t_identifier.
+    def enterT_identifier(self, ctx:TQLParser.T_identifierContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#t_identifier.
+    def exitT_identifier(self, ctx:TQLParser.T_identifierContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#p_identifier.
+    def enterP_identifier(self, ctx:TQLParser.P_identifierContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#p_identifier.
+    def exitP_identifier(self, ctx:TQLParser.P_identifierContext):
         pass
 
 

@@ -2,7 +2,9 @@ import sys
 from antlr4 import *
 from dist.TQLLexer import TQLLexer
 from dist.TQLParser import TQLParser
+from dist.TQLListener import TQLListener
 from visitor import visitor
+
 
 
 def main(argv):
@@ -13,7 +15,8 @@ def main(argv):
     parser = TQLParser(stream)
     tree = parser.program()
     output = open("output.txt","w")
-    
+
+    print(tree)
     obj=visitor(output)
     obj.visit(tree)
         

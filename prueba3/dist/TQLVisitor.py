@@ -39,11 +39,6 @@ class TQLVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by TQLParser#list.
-    def visitList(self, ctx:TQLParser.ListContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by TQLParser#delete_query.
     def visitDelete_query(self, ctx:TQLParser.Delete_queryContext):
         return self.visitChildren(ctx)
@@ -51,11 +46,6 @@ class TQLVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by TQLParser#modify_query.
     def visitModify_query(self, ctx:TQLParser.Modify_queryContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by TQLParser#pair.
-    def visitPair(self, ctx:TQLParser.PairContext):
         return self.visitChildren(ctx)
 
 
@@ -76,6 +66,31 @@ class TQLVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by TQLParser#dtype.
     def visitDtype(self, ctx:TQLParser.DtypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#pair.
+    def visitPair(self, ctx:TQLParser.PairContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list.
+    def visitList(self, ctx:TQLParser.ListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#a_identifier.
+    def visitA_identifier(self, ctx:TQLParser.A_identifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#t_identifier.
+    def visitT_identifier(self, ctx:TQLParser.T_identifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#p_identifier.
+    def visitP_identifier(self, ctx:TQLParser.P_identifierContext):
         return self.visitChildren(ctx)
 
 
