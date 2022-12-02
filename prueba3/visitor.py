@@ -50,7 +50,11 @@ class visitor(TQLVisitor):
 
             if ctx.specifications().PLAYER() != None:
                 teams = False
+        print("si llega")
         createTournament = TQLDataBase()
         createTournament.createTournament(name, abbr, attributes, participats, teams)
+        createTournament.organize('RoundRobin',abbr)
         createTournament.closeConnection()
         return super().visitCreate_query(ctx)
+
+

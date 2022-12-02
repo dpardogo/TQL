@@ -2,7 +2,11 @@ import sqlite3
 import os
 from dotenv import load_dotenv
 class TQLDataBase:
+    sqliteConnection = None
+    cursor = None
+    
     from ._createTournament import createTournament
+    from ._organizeTournament import organize,organizeSE,organizeDE,organizeRR,organizeSS
     def __init__(self):
         load_dotenv()
         try:
@@ -11,6 +15,7 @@ class TQLDataBase:
 
         except sqlite3.Error as error:
             print("Error estavlishing connection with data base, error: ", error)
+    
     def closeConnection(self):
         self.cursor.close()
     def plainQuery(self, query):
