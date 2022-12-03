@@ -34,13 +34,53 @@ class TQLVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by TQLParser#add_query.
-    def visitAdd_query(self, ctx:TQLParser.Add_queryContext):
+    # Visit a parse tree produced by TQLParser#add_team.
+    def visitAdd_team(self, ctx:TQLParser.Add_teamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#add_single_player.
+    def visitAdd_single_player(self, ctx:TQLParser.Add_single_playerContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#add_player.
+    def visitAdd_player(self, ctx:TQLParser.Add_playerContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#delete_tournament.
+    def visitDelete_tournament(self, ctx:TQLParser.Delete_tournamentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#delete_team.
+    def visitDelete_team(self, ctx:TQLParser.Delete_teamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#delete_single_player.
+    def visitDelete_single_player(self, ctx:TQLParser.Delete_single_playerContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#delete_player.
+    def visitDelete_player(self, ctx:TQLParser.Delete_playerContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by TQLParser#delete_query.
     def visitDelete_query(self, ctx:TQLParser.Delete_queryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#add_fs.
+    def visitAdd_fs(self, ctx:TQLParser.Add_fsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#add_ss.
+    def visitAdd_ss(self, ctx:TQLParser.Add_ssContext):
         return self.visitChildren(ctx)
 
 
@@ -106,6 +146,46 @@ class TQLVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by TQLParser#abbr.
     def visitAbbr(self, ctx:TQLParser.AbbrContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#clear.
+    def visitClear(self, ctx:TQLParser.ClearContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_data.
+    def visitList_data(self, ctx:TQLParser.List_dataContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_team.
+    def visitList_team(self, ctx:TQLParser.List_teamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_tournament.
+    def visitList_tournament(self, ctx:TQLParser.List_tournamentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_player_team.
+    def visitList_player_team(self, ctx:TQLParser.List_player_teamContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_single_players.
+    def visitList_single_players(self, ctx:TQLParser.List_single_playersContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#exit.
+    def visitExit(self, ctx:TQLParser.ExitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#read_file.
+    def visitRead_file(self, ctx:TQLParser.Read_fileContext):
         return self.visitChildren(ctx)
 
 

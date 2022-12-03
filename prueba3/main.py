@@ -8,18 +8,17 @@ from visitor import visitor
 
 
 def main(argv):
-    input = FileStream(argv[1])
+    
+    print("TQL V0.1.0")
+    while True:
+        inputstr = input("TQL> ")
 
-    lexer = TQLLexer(input)
-    stream = CommonTokenStream(lexer)
-    parser = TQLParser(stream)
-    tree = parser.program()
-    output = open("output.txt","w")
+        lexer = TQLLexer(InputStream(inputstr))
+        stream = CommonTokenStream(lexer)
+        parser = TQLParser(stream)
+        tree = parser.program()
 
-    print(tree)
-    obj=visitor(output)
-    obj.visit(tree)
-        
-    output.close()      
+        obj=visitor()
+        obj.visit(tree)
 if __name__ == '__main__':
     main(sys.argv)

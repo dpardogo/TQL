@@ -1,0 +1,5 @@
+CREATE tournament "mundialito de banquitas"(mundial) (faltas,goles,amarillas) with 5 participants ["los pollitos"(PLL) ,"los pirobos"(PRB),"los ganadores"(GND), "a" (AAA),"b"(BBB)] CONTENDER TEAM
+ADD TEAM IN TOURNAMENT "mundialito de banquitas" ["Union Sovietica"]
+ADD PLAYER TO "los pollitos" IN TOURNAMENT "mundialito de banquitas" ["Messi"]
+CREATE tournament "mundialito"(mundial) (faltas,goles,amarillas) with 5 participants ["los pollitos"(PLL) ,"los pirobos"(PRB),"los ganadores"(GND), "a" (AAA),"b"(BBB)] CONTENDER PLAYER
+ADD PLAYER IN TOURNAMENT "mundialito" ["Zamba"]
