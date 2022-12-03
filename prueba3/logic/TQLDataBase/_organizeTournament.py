@@ -1,10 +1,10 @@
 import math, random
-def organize(self,system,name):
+def organize(self,system,name,abbr=True):
     functions={
-        'Knockout': lambda : self.organizeSE(name),
-        'DobleElimination': lambda : self.organizeDE(name),
-        'RoundRobin': lambda : self.organizeRR(name),
-        'SwissSystem': lambda : self.organizeSS(name),
+        'Knockout': lambda : self.organizeSE(name,abbr),
+        'DobleElimination': lambda : self.organizeDE(name,abbr),
+        'RoundRobin': lambda : self.organizeRR(name,abbr),
+        'SwissSystem': lambda : self.organizeSS(name,abbr),
     }
     query = """CREATE TABLE IF NOT EXISTS matches (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -12,6 +12,8 @@ def organize(self,system,name):
         P2 INTEGER ,
         abbreviation VARCHAR(12),
         tournament INTEGER NOT NULL,
+        nextMatch INTEGER,
+        loserRound INTEGER,
         phase INTEGER NOT NULL,
         FOREIGN KEY(P1) REFERENCES team(id),
         FOREIGN KEY(P2) REFERENCES team(id),
@@ -31,10 +33,7 @@ def organizeSE(self,name,abbr=True):
     else:
         self.cursor.execute("select id from tournament where name='{}'".format(name))
         idt=self.cursor.fetchall()[0][0]
-        query = """select team.id, team.abbreviation from team 
-        inner join tournament on tournament.id=team.tournament 
-        where tournament.name ='{}' ;
-        """.format(name)
+     
 
     query = """select id, abbreviation from team 
             where tournament ={} ;
@@ -56,10 +55,10 @@ def organizeSE(self,name,abbr=True):
     while len(matches)<(n-2**rounds):
         p1,p2=remaining.pop(),remaining.pop()
         matches.append((p1,p2))
-        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
+        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {}, {})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
         self.cursor.execute(query)
 
-        nextRound.append(('NULL','W'+str(len(matches))))
+        nextRound.append(('NULL',str(len(matches))))
     
     while len(nextRound):
         remaining.append(nextRound.pop())
@@ -70,11 +69,21 @@ def organizeSE(self,name,abbr=True):
         while len(remaining)>1:
             p1,p2=remaining.pop(),remaining.pop()
             matches.append((p1,p2))
-            
+            if type(p1[1])==int:
+                prev=p1[1]
+                self.cursor.execute("update match set nextMatch={} where id={}".format(len(matches),prev))
+                p1[1]='W'+str(prev)
+
+            if type(p2[1])==int:
+                prev=p1[1]
+                self.cursor.execute("update match set nextMatch={} where id={}".format(len(matches),prev))
+                p1[1]='W'+str(prev)
+
             query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
+
             self.cursor.execute(query)
 
-            nextRound.append(('NULL','W'+str(len(matches))))
+            nextRound.append(('NULL',str(len(matches))))
 
         while len(nextRound):
             remaining.append(nextRound.pop())
@@ -93,10 +102,6 @@ def organizeDE(self,name,abbr=True):
     else:
         self.cursor.execute("select id from tournament where name='{}'".format(name))
         idt=self.cursor.fetchall()[0][0]
-        query = """select team.id, team.abbreviation from team 
-        inner join tournament on tournament.id=team.tournament 
-        where tournament.name ='{}' ;
-        """.format(name)
 
     query = """select id, abbreviation from team 
             where tournament ={} ;
@@ -120,7 +125,7 @@ def organizeDE(self,name,abbr=True):
 
         p1,p2=mainRound.pop(),mainRound.pop()
         matches.append((p1,p2))
-        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
+        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase, winner)  VALUES ({}, {}, '{}', {}, {}, 0)".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
         self.cursor.execute(query)
 
         nextRound.append(('NULL','W'+str(len(matches))))
@@ -170,10 +175,6 @@ def organizeRR(self,name,abbr=True):
     else:
         self.cursor.execute("select id from tournament where name='{}'".format(name))
         idt=self.cursor.fetchall()[0][0]
-        query = """select team.id, team.abbreviation from team 
-        inner join tournament on tournament.id=team.tournament 
-        where tournament.name ='{}' ;
-        """.format(name)
 
     query = """select id, abbreviation from team 
             where tournament ={} ;

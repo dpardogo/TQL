@@ -4,7 +4,8 @@ def createTournament(self, name, abbreviation, attributes, participants, teams):
         name VARCHAR(255) NOT NULL,
         abbreviation VARCHAR(50),
         type INTEGER NOT NULL,
-        contender BOOLEAN NOT NULL
+        contender BOOLEAN NOT NULL,
+        curr_phase INTEGER NOT NULL
         );"""
     self.cursor.execute(query)
     atbs = ""
@@ -43,9 +44,10 @@ def createTournament(self, name, abbreviation, attributes, participants, teams):
         );"""
         self.cursor.execute(query) 
     if abbreviation != None:
-        query = "INSERT INTO tournament (name, abbreviation, type, contender)  VALUES ('{}', '{}', 0, {})".format(name, abbreviation, teams)
+        query = "INSERT INTO tournament (name, abbreviation, type, contender, curr_phase)  VALUES ('{}', '{}', 0, {}, {})".format(name, abbreviation, teams, 0)
     else:
-        query = "INSERT INTO tournament (name, abbreviation, type, contender)  VALUES ('{}', NULL, 0, {})".format(name, teams)
+        query = "INSERT INTO tournament (name, abbreviation, type, contender, curr_phase)  VALUES ('{}', NULL, 0, {}, {})".format(name, teams, 0)
+
     self.cursor.execute(query)
     self.sqliteConnection.commit()
 

@@ -23,7 +23,7 @@ add_query           : ADD PARTICIPANT TO t_identifier ( name | list);
 
 delete_query        : DELETE ( WORD | attributes | list) FROM t_identifier;
 
-modify_query        : MODIFY PARTICIPANT ( WORD | INTEGER) FROM t_identifier '{' pair ( ',' pair )* '}';
+modify_query        : MODIFY PARTICIPANT p_identifier FROM t_identifier '{' pair ( ',' pair )* '}';
 
 organize_query      : ORGANIZE TOURNAMENT t_identifier BY WORD ;
 
