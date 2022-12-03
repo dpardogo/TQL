@@ -53,12 +53,66 @@ class TQLListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TQLParser#add_query.
-    def enterAdd_query(self, ctx:TQLParser.Add_queryContext):
+    # Enter a parse tree produced by TQLParser#add_team.
+    def enterAdd_team(self, ctx:TQLParser.Add_teamContext):
         pass
 
-    # Exit a parse tree produced by TQLParser#add_query.
-    def exitAdd_query(self, ctx:TQLParser.Add_queryContext):
+    # Exit a parse tree produced by TQLParser#add_team.
+    def exitAdd_team(self, ctx:TQLParser.Add_teamContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#add_single_player.
+    def enterAdd_single_player(self, ctx:TQLParser.Add_single_playerContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#add_single_player.
+    def exitAdd_single_player(self, ctx:TQLParser.Add_single_playerContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#add_player.
+    def enterAdd_player(self, ctx:TQLParser.Add_playerContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#add_player.
+    def exitAdd_player(self, ctx:TQLParser.Add_playerContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#delete_tournament.
+    def enterDelete_tournament(self, ctx:TQLParser.Delete_tournamentContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#delete_tournament.
+    def exitDelete_tournament(self, ctx:TQLParser.Delete_tournamentContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#delete_team.
+    def enterDelete_team(self, ctx:TQLParser.Delete_teamContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#delete_team.
+    def exitDelete_team(self, ctx:TQLParser.Delete_teamContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#delete_single_player.
+    def enterDelete_single_player(self, ctx:TQLParser.Delete_single_playerContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#delete_single_player.
+    def exitDelete_single_player(self, ctx:TQLParser.Delete_single_playerContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#delete_player.
+    def enterDelete_player(self, ctx:TQLParser.Delete_playerContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#delete_player.
+    def exitDelete_player(self, ctx:TQLParser.Delete_playerContext):
         pass
 
 
@@ -68,6 +122,24 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#delete_query.
     def exitDelete_query(self, ctx:TQLParser.Delete_queryContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#add_fs.
+    def enterAdd_fs(self, ctx:TQLParser.Add_fsContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#add_fs.
+    def exitAdd_fs(self, ctx:TQLParser.Add_fsContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#add_ss.
+    def enterAdd_ss(self, ctx:TQLParser.Add_ssContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#add_ss.
+    def exitAdd_ss(self, ctx:TQLParser.Add_ssContext):
         pass
 
 
@@ -185,6 +257,78 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#abbr.
     def exitAbbr(self, ctx:TQLParser.AbbrContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#clear.
+    def enterClear(self, ctx:TQLParser.ClearContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#clear.
+    def exitClear(self, ctx:TQLParser.ClearContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_data.
+    def enterList_data(self, ctx:TQLParser.List_dataContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_data.
+    def exitList_data(self, ctx:TQLParser.List_dataContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_team.
+    def enterList_team(self, ctx:TQLParser.List_teamContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_team.
+    def exitList_team(self, ctx:TQLParser.List_teamContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_tournament.
+    def enterList_tournament(self, ctx:TQLParser.List_tournamentContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_tournament.
+    def exitList_tournament(self, ctx:TQLParser.List_tournamentContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_player_team.
+    def enterList_player_team(self, ctx:TQLParser.List_player_teamContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_player_team.
+    def exitList_player_team(self, ctx:TQLParser.List_player_teamContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_single_players.
+    def enterList_single_players(self, ctx:TQLParser.List_single_playersContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_single_players.
+    def exitList_single_players(self, ctx:TQLParser.List_single_playersContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#exit.
+    def enterExit(self, ctx:TQLParser.ExitContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#exit.
+    def exitExit(self, ctx:TQLParser.ExitContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#read_file.
+    def enterRead_file(self, ctx:TQLParser.Read_fileContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#read_file.
+    def exitRead_file(self, ctx:TQLParser.Read_fileContext):
         pass
 
 

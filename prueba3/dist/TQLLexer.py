@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,0,34,385,6,-1,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,
+        4,0,41,466,6,-1,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,
         2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,
         13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,
         19,2,20,7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,
@@ -184,10 +184,17 @@ class TQLLexer(Lexer):
     TEAM = 28
     PLAYER = 29
     CONTENDER = 30
-    STRING = 31
-    WORD = 32
-    INTEGER = 33
-    WHITESPACE = 34
+    IN = 31
+    CLEAR = 32
+    LIST = 33
+    DATA = 34
+    EXIT = 35
+    LOAD = 36
+    PATH = 37
+    STRING = 38
+    WORD = 39
+    INTEGER = 40
+    WHITESPACE = 41
 
     channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
 
@@ -200,15 +207,17 @@ class TQLLexer(Lexer):
             "CREATE", "TOURNAMENT", "WITH", "PARTICIPANT", "ADD", "TO", 
             "ORGANIZE", "ATTRIBUTE", "DELETE", "FROM", "BY", "REPORT", "MODIFY", 
             "MATCH", "OF", "ID", "SHOW", "PHASE", "SUMMARY", "TEAM", "PLAYER", 
-            "CONTENDER", "STRING", "WORD", "INTEGER", "WHITESPACE" ]
+            "CONTENDER", "IN", "CLEAR", "LIST", "DATA", "EXIT", "LOAD", 
+            "PATH", "STRING", "WORD", "INTEGER", "WHITESPACE" ]
 
     ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", 
                   "T__7", "A", "E", "I", "O", "U", "Y", "C", "R", "T", "D", 
                   "G", "N", "Z", "P", "M", "F", "W", "H", "S", "B", "L", 
-                  "DIGIT", "LOWERCASE", "UPPERCASE", "CREATE", "TOURNAMENT", 
+                  "X", "DIGIT", "LOWERCASE", "UPPERCASE", "CREATE", "TOURNAMENT", 
                   "WITH", "PARTICIPANT", "ADD", "TO", "ORGANIZE", "ATTRIBUTE", 
                   "DELETE", "FROM", "BY", "REPORT", "MODIFY", "MATCH", "OF", 
                   "ID", "SHOW", "PHASE", "SUMMARY", "TEAM", "PLAYER", "CONTENDER", 
+                  "IN", "CLEAR", "LIST", "DATA", "EXIT", "LOAD", "PATH", 
                   "STRING", "WORD", "INTEGER", "WHITESPACE" ]
 
     grammarFileName = "TQL.g4"

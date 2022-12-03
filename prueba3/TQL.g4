@@ -7,23 +7,44 @@ grammar TQL;
 program				: line+ ;
 
 line				: create_query
-                    | add_query
-                    | delete_query
+                    | add_team
+                    | add_single_player
+                    | add_player
+                    | delete_tournament
+                    | delete_team
+                    | delete_player
+                    | delete_single_player
                     | modify_query
                     | organize_query
                     | report_query
                     | show_query
+                    | clear
+                    | list_data
+                    | exit
+                    | list_tournament
+                    | list_team
+                    | list_player_team
+                    | list_single_players
+                    | read_file
                     ;
 
 create_query        : CREATE TOURNAMENT name specifications?;
 specifications  	: attributes ( WITH INTEGER PARTICIPANT )? list? (CONTENDER (TEAM | PLAYER))?;
 attributes          : '(' WORD ( ',' WORD )* ')';
 
-add_query           : ADD PARTICIPANT TO t_identifier ( name | list);
+add_team           : ADD TEAM IN TOURNAMENT add_fs ( name | list);
+add_single_player  : ADD PLAYER IN TOURNAMENT add_fs  ( name | list);
+add_player         : ADD PLAYER TO add_fs IN TOURNAMENT add_ss  ( name | list);
 
+delete_tournament     : DELETE TOURNAMENT name (CONTENDER (TEAM | PLAYER))?;
+delete_team           : DELETE TEAM IN TOURNAMENT add_fs ( name | list);
+delete_single_player  : DELETE PLAYER IN TOURNAMENT add_fs  ( name | list);
+delete_player         : DELETE PLAYER OF add_fs IN TOURNAMENT add_ss  ( name | list);
 delete_query        : DELETE ( WORD | attributes | list) FROM t_identifier;
 
 modify_query        : MODIFY PARTICIPANT p_identifier FROM t_identifier '{' pair ( ',' pair )* '}';
+add_fs             : STRING;
+add_ss             : STRING;
 
 organize_query      : ORGANIZE TOURNAMENT t_identifier BY WORD ;
 
@@ -46,6 +67,14 @@ p_identifier        : STRING | WORD;
 identifier          : WORD;
 name				: STRING ( '(' abbr ')' )?;
 abbr                : WORD;
+clear               : CLEAR;
+list_data           : LIST DATA;
+list_team           : LIST TEAM;
+list_tournament     : LIST TOURNAMENT;
+list_player_team    : LIST PLAYER IN TEAM;
+list_single_players : LIST PLAYER IN TOURNAMENT;
+exit                : EXIT;
+read_file           : LOAD FROM PATH STRING;
 					 					
 
 
@@ -73,8 +102,9 @@ fragment F: [Ff];
 fragment W: [Ww];
 fragment H: [Hh];
 fragment S: [Ss];
-fragment B: [Bb];
+fragment B: [Bs];
 fragment L: [Ll];
+fragment X: [Xx];
 
 fragment DIGIT      : [0-9] ;
 fragment LOWERCASE  : [a-z] ;
@@ -99,9 +129,16 @@ ID                  : I D;
 SHOW                : S H O W;
 PHASE               : P H A S E;
 SUMMARY             : S U M M A R Y;
-TEAM                : T E A M;
-PLAYER              : P L A Y E R;
-CONTENDER           : C O N T E N D E R;
+TEAM                : T E A M | T E A M S;
+PLAYER              : P L A Y E R | P L A Y E R S;
+CONTENDER           : C O N T E N D E R | C O N T E N D E R;
+IN                  : I N;
+CLEAR               : C L E A R;
+LIST                : L I S T;
+DATA                : D A T A;
+EXIT                : E X I T;
+LOAD                : L O A D;
+PATH                : P A T H;
 
 STRING              :'"' ~["]+ '"';
 WORD				: (LOWERCASE | UPPERCASE)(LOWERCASE | UPPERCASE| DIGIT | '_')* ;

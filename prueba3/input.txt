@@ -1,4 +1,0 @@
-CREATE tournament "mundialito de banquitas"(mundial) (faltas,goles,amarillas) with 5 participants ["los pollitos"(PLL) ,"los pirobos"(PRB),"los ganadores"(GND), "a" (AAA),"b"(BBB)] CONTENDER team
-organize tournament mundial by DoubleElimination
-report victory of AAA from mundial
-modify participant AAA from mundial {faltas:10}
