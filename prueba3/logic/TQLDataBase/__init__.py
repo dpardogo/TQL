@@ -7,7 +7,7 @@ class TQLDataBase:
     
     from ._createTournament import createTournament
     from ._organizeTournament import organize,organizeSE,organizeDE,organizeRR,organizeSS
-    from ._reportTournament import reportTournament
+    from ._reportTournament import reportTournament,reportVictory
     def __init__(self):
         load_dotenv()
         try:

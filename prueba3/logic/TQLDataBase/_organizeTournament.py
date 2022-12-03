@@ -2,7 +2,7 @@ import math, random
 def organize(self,system,name,abbr=True):
     functions={
         'Knockout': lambda : self.organizeSE(name,abbr),
-        'DobleElimination': lambda : self.organizeDE(name,abbr),
+        'DoubleElimination': lambda : self.organizeDE(name,abbr),
         'RoundRobin': lambda : self.organizeRR(name,abbr),
         'SwissSystem': lambda : self.organizeSS(name,abbr),
     }
@@ -11,9 +11,10 @@ def organize(self,system,name,abbr=True):
         P1 INTEGER ,
         P2 INTEGER ,
         abbreviation VARCHAR(12),
-        tournament INTEGER NOT NULL,
+        winner INTEGER,
         nextMatch INTEGER,
         loserRound INTEGER,
+        tournament INTEGER NOT NULL,
         phase INTEGER NOT NULL,
         FOREIGN KEY(P1) REFERENCES team(id),
         FOREIGN KEY(P2) REFERENCES team(id),
@@ -41,49 +42,55 @@ def organizeSE(self,name,abbr=True):
     self.cursor.execute(query)
 
     remaining=[i for i in self.cursor.fetchall()]
-    
-    
     random.shuffle(remaining)
+
     n= len(remaining)
     rounds=math.floor(math.log(n,2))
-
-    matches=[]
+    
     nextRound=[]
 
+    matches=0
     phase=0
 
-    while len(matches)<(n-2**rounds):
+    self.cursor.execute("SELECT MAX(id) FROM matches")
+    currid=self.cursor.fetchall()[0][0]
+    currid= 0 if currid==None else currid
+
+    while matches<(n-2**rounds):
         p1,p2=remaining.pop(),remaining.pop()
-        matches.append((p1,p2))
+        matches+=1
+        currid+=1
+
         query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {}, {})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
         self.cursor.execute(query)
 
-        nextRound.append(('NULL',str(len(matches))))
+        nextRound.append((currid,))
     
     while len(nextRound):
         remaining.append(nextRound.pop())
-
     
-    while len(matches)<n-1:
+
+    while matches<n-1:
         phase+=1
         while len(remaining)>1:
             p1,p2=remaining.pop(),remaining.pop()
-            matches.append((p1,p2))
-            if type(p1[1])==int:
-                prev=p1[1]
-                self.cursor.execute("update match set nextMatch={} where id={}".format(len(matches),prev))
-                p1[1]='W'+str(prev)
+            matches+=1
+            currid+=1
 
-            if type(p2[1])==int:
-                prev=p1[1]
-                self.cursor.execute("update match set nextMatch={} where id={}".format(len(matches),prev))
-                p1[1]='W'+str(prev)
+            print(p1,p2)
+            if len(p1)==1:
+                self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p1[0]))
+                p1=('NULL','W'+str(p1[0]))
+
+            if len(p2)==1:
+                self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p2[0]))
+                p2=('NULL','W'+str(p2[0]))
 
             query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
-
+                      
             self.cursor.execute(query)
 
-            nextRound.append(('NULL',str(len(matches))))
+            nextRound.append((currid,))
 
         while len(nextRound):
             remaining.append(nextRound.pop())
@@ -114,53 +121,97 @@ def organizeDE(self,name,abbr=True):
 
     n= len(mainRound)
     rounds=math.floor(math.log(n,2))
-
-    matches=[]
     
     nextRound=[]
     losersRound=[]
 
+    matches=0
     phase=0
-    while len(matches)<(n-2**rounds):
 
+    self.cursor.execute("SELECT MAX(id) FROM matches")
+    currid=self.cursor.fetchall()[0][0]
+    currid= 0 if currid==None else currid
+
+    while matches<(n-2**rounds):
         p1,p2=mainRound.pop(),mainRound.pop()
-        matches.append((p1,p2))
-        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase, winner)  VALUES ({}, {}, '{}', {}, {}, 0)".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
+        matches+=1
+        currid+=1
+
+        query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {}, {})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
         self.cursor.execute(query)
 
-        nextRound.append(('NULL','W'+str(len(matches))))
-        losersRound.append(('NULL','L'+str(len(matches))))
-    
+        nextRound.append((currid,))
+        losersRound.append((-currid,))
+
     while len(nextRound):
         mainRound.append(nextRound.pop())
 
-
-    while len(matches)<2*n-3:
+    while matches<2*n-3:
         phase+=1
-        while max(len(mainRound)//2,1) < len(losersRound):
 
+        while max(len(mainRound)//2,1) < len(losersRound):
             p1,p2=losersRound.pop(),losersRound.pop()
-            matches.append((p1,p2))
+            print(p1,p2)
+            matches+=1
+            currid+=1
+
+            if len(p1)==1:
+                if(p1[0]>0):
+                    self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p1[0]))
+                    p1=('NULL','W'+str(p1[0]))
+                else:
+                    self.cursor.execute("update matches set loserRound={} where id={}".format(currid,-p1[0]))
+                    p1=('NULL','l'+str(-p1[0]))
+
+            if len(p2)==1:
+                if(p2[0]>0):
+                    self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p2[0]))
+                    p2=('NULL','W'+str(p2[0]))
+                else:
+                    print('entra')
+                    self.cursor.execute("update matches set loserRound={} where id={}".format(currid,-p2[0]))
+                    p2=('NULL','l'+str(-p2[0]))
+            
             query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
             self.cursor.execute(query)
 
-            losersRound.append(('NULL','W'+str(len(matches))))
+            losersRound.append((currid,))
 
 
         while 1<len(mainRound):
             p1,p2=mainRound.pop(),mainRound.pop()
-            matches.append((p1,p2))
+            matches+=1
+            currid+=1
+    
+            if len(p1)==1:
+                if(p1[0]>0):
+                    self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p1[0]))
+                    p1=('NULL','W'+str(p1[0]))
+                else:
+                    self.cursor.execute("update matches set loserRound={} where id={}".format(currid,-p1[0]))
+                    p1=('NULL','l'+str(-p1[0]))
+
+            if len(p2)==1:
+                if(p2[0]>0):
+                    self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p2[0]))
+                    p2=('NULL','W'+str(p2[0]))
+                else:
+                    self.cursor.execute("update matches set loserRound={} where id={}".format(currid,-p2[0]))
+                    p2=('NULL','l'+str(-p2[0]))
+
             query = "INSERT INTO matches (P1, P2, abbreviation, tournament, phase)  VALUES ({}, {}, '{}', {},{})".format(p1[0],p2[0],p1[1]+'-'+p2[1],idt,phase)
+                      
             self.cursor.execute(query)
 
-            nextRound.append(('NULL','W'+str(len(matches))))
-            losersRound.append(('NULL','L'+str(len(matches))))
+            nextRound.append((currid,))
+            losersRound.append((-currid,))
 
         while len(nextRound):
             mainRound.append(nextRound.pop())
 
-    matches.append((losersRound[0],mainRound[0]))
-        
+    p1,p2=losersRound[0],mainRound[0]
+
+    query = "INSERT INTO matches (abbreviation, tournament, phase)  VALUES ( '{}', {},{})".format('W'+str(p1[0])+'-'+'W'+str(p2[0]),idt,phase) 
     print(matches)
     self.sqliteConnection.commit()
     

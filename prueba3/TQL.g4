@@ -73,7 +73,7 @@ fragment F: [Ff];
 fragment W: [Ww];
 fragment H: [Hh];
 fragment S: [Ss];
-fragment B: [Bs];
+fragment B: [Bb];
 fragment L: [Ls];
 
 fragment DIGIT      : [0-9] ;

@@ -7,6 +7,8 @@ from dist.TQLListener import TQLListener
 from dist.TQLVisitor import TQLVisitor
 from logic.TQLDataBase import TQLDataBase
 
+from re import match
+
 class visitor(TQLVisitor):
     def __init__(self,output):
         self.output=output
@@ -53,7 +55,6 @@ class visitor(TQLVisitor):
         
         createTournament = TQLDataBase()
         createTournament.createTournament(name, abbr, attributes, participats, teams)
-        createTournament.organize('Knockout',abbr,True)
         createTournament.closeConnection()
 
         return super().visitCreate_query(ctx)
@@ -82,8 +83,9 @@ class visitor(TQLVisitor):
 
     def visitOrganize_query(self, ctx: TQLParser.Organize_queryContext):
         tid=self.visit(ctx.t_identifier())
-        system=ctx.WORD()
+        system=ctx.WORD().getText()
 
+        print(system,tid[0],tid[1])
         organizeTournament = TQLDataBase()
         organizeTournament.organize(system,tid[0],tid[1])
         organizeTournament.closeConnection()
@@ -92,12 +94,15 @@ class visitor(TQLVisitor):
 
 
     def visitReport_query(self, ctx: TQLParser.Report_queryContext):
-        atr=self.visit(ctx.a_identifier)
-        team=self.visit(ctx.p_identifier)
-        tourn=self.visit(ctx.t_identifier)
+        atr=self.visit(ctx.a_identifier())
+        team=self.visit(ctx.p_identifier())
+        tourn=self.visit(ctx.t_identifier())
 
         reportTournament = TQLDataBase()
-        reportTournament.reportTournament(atr,team[0],team[1],tourn[0],tourn[1])
+        if match("[Vv][Ii][Cc][Tt][Oo][Rr][Yy]",atr): 
+            reportTournament.reportVictory(team[0],team[1],tourn[0],tourn[1]) 
+        else:
+            reportTournament.reportTournament(atr,team[0],team[1],tourn[0],tourn[1])
         reportTournament.closeConnection()
 
         return super().visitReport_query(ctx)
@@ -105,19 +110,19 @@ class visitor(TQLVisitor):
 
 
     def visitA_identifier(self, ctx: TQLParser.A_identifierContext):
-        return ctx.WORD()
+        return ctx.WORD().getText()
 
     def visitP_identifier(self, ctx: TQLParser.P_identifierContext):
         if ctx.WORD()!=None:
-            return (ctx.WORD().getText(), False)
+            return (ctx.WORD().getText(), True)
         else:
-            return (ctx.STRING().getText().replace('"', ''), True)
+            return (ctx.STRING().getText().replace('"', ''), False)
 
     def visitT_identifier(self, ctx: TQLParser.T_identifierContext):
         if ctx.WORD()!=None:
-            return (ctx.WORD().getText(), False)
+            return (ctx.WORD().getText(), True)
         else:
-            return (ctx.STRING().getText().replace('"', ''), True)
+            return (ctx.STRING().getText().replace('"', ''), False)
 
     def visitList(self, ctx: TQLParser.ListContext):
         array=[]
@@ -131,25 +136,6 @@ class visitor(TQLVisitor):
             array.append(i.getText())
         return array
         
-"""
-    def visitSpecifications(self, ctx: TQLParser.SpecificationsContext):
-        array=[]
-        if ctx.list_()!= None:
-            array=self.visit(ctx.list_())
-        
-        if ctx.INTEGER()!=None:
-            n=int(ctx.INTEGER().getText())
-            while( len(array)<n):
-                array.append(("participant"+str(len(array)),"PR"+str(len(array))))
-
-        return (self.visit(ctx.attributes),array)
-
-    
-    
-    
-
-    
-
     def visitName(self, ctx: TQLParser.NameContext):
         abr=''
         if ctx.abbr()!= None:
@@ -159,4 +145,3 @@ class visitor(TQLVisitor):
 
     def visitAbbr(self, ctx: TQLParser.AbbrContext):
         return ctx.WORD()
-"""
