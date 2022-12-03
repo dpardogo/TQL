@@ -354,6 +354,8 @@ class visitor(TQLVisitor):
         tql.printPlayer()
         print("PLAYERS IN TOURNAMENTS:")
         tql.printSinglePlayer()
+        print("Matches:")
+        tql.printMatches()
         return super().visitList_data(ctx)
     def visitExit(self, ctx:TQLParser.ExitContext):
         print("Bye bye")
@@ -378,6 +380,11 @@ class visitor(TQLVisitor):
         print("PLAYERS IN TOURNAMENTS:")
         tql.printSinglePlayer()
         return super().visitList_single_players(ctx)
+    def visitList_matches(self, ctx:TQLParser.List_single_playersContext):
+        tql = TQLDataBase()
+        print("Matches:")
+        tql.printMatches()
+        return super().visitList_matches(ctx)
     def visitRead_file(self, ctx: TQLParser.Read_fileContext):
         path = ""
         if ctx.STRING() != None:

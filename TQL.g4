@@ -26,6 +26,7 @@ line				: create_query
                     | list_player_team
                     | list_single_players
                     | read_file
+                    | list_matches
                     ;
 
 create_query        : CREATE TOURNAMENT name specifications?;
@@ -73,6 +74,7 @@ list_team           : LIST TEAM;
 list_tournament     : LIST TOURNAMENT;
 list_player_team    : LIST PLAYER IN TEAM;
 list_single_players : LIST PLAYER IN TOURNAMENT;
+list_matches        : LIST MATCHES;
 exit                : EXIT;
 read_file           : LOAD FROM PATH STRING;
 					 					
@@ -102,7 +104,7 @@ fragment F: [Ff];
 fragment W: [Ww];
 fragment H: [Hh];
 fragment S: [Ss];
-fragment B: [Bs];
+fragment B: [Bb];
 fragment L: [Ll];
 fragment X: [Xx];
 
@@ -139,6 +141,7 @@ DATA                : D A T A;
 EXIT                : E X I T;
 LOAD                : L O A D;
 PATH                : P A T H;
+MATCHES             : M A T C H E S;
 
 STRING              :'"' ~["]+ '"';
 WORD				: (LOWERCASE | UPPERCASE)(LOWERCASE | UPPERCASE| DIGIT | '_')* ;

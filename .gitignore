@@ -5,6 +5,9 @@ __pycache__/
 
 # C extensions
 *.so
+#libaries
+/logic/TQL.db
+input.txt
 
 # Distribution / packaging
 .Python

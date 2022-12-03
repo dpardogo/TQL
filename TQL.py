@@ -9,7 +9,7 @@ from visitor import visitor
 
 def main(argv):
     
-    print("TQL V0.1.0")
+    print("TQL V0.2.0")
     while True:
         inputstr = input("TQL> ")
 

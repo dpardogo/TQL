@@ -125,6 +125,15 @@ class TQLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TQLParser#modify_query.
+    def enterModify_query(self, ctx:TQLParser.Modify_queryContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#modify_query.
+    def exitModify_query(self, ctx:TQLParser.Modify_queryContext):
+        pass
+
+
     # Enter a parse tree produced by TQLParser#add_fs.
     def enterAdd_fs(self, ctx:TQLParser.Add_fsContext):
         pass
@@ -140,15 +149,6 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#add_ss.
     def exitAdd_ss(self, ctx:TQLParser.Add_ssContext):
-        pass
-
-
-    # Enter a parse tree produced by TQLParser#modify_query.
-    def enterModify_query(self, ctx:TQLParser.Modify_queryContext):
-        pass
-
-    # Exit a parse tree produced by TQLParser#modify_query.
-    def exitModify_query(self, ctx:TQLParser.Modify_queryContext):
         pass
 
 
@@ -311,6 +311,15 @@ class TQLListener(ParseTreeListener):
 
     # Exit a parse tree produced by TQLParser#list_single_players.
     def exitList_single_players(self, ctx:TQLParser.List_single_playersContext):
+        pass
+
+
+    # Enter a parse tree produced by TQLParser#list_matches.
+    def enterList_matches(self, ctx:TQLParser.List_matchesContext):
+        pass
+
+    # Exit a parse tree produced by TQLParser#list_matches.
+    def exitList_matches(self, ctx:TQLParser.List_matchesContext):
         pass
 
 

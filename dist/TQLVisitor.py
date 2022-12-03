@@ -74,6 +74,11 @@ class TQLVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by TQLParser#modify_query.
+    def visitModify_query(self, ctx:TQLParser.Modify_queryContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by TQLParser#add_fs.
     def visitAdd_fs(self, ctx:TQLParser.Add_fsContext):
         return self.visitChildren(ctx)
@@ -81,11 +86,6 @@ class TQLVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by TQLParser#add_ss.
     def visitAdd_ss(self, ctx:TQLParser.Add_ssContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by TQLParser#modify_query.
-    def visitModify_query(self, ctx:TQLParser.Modify_queryContext):
         return self.visitChildren(ctx)
 
 
@@ -176,6 +176,11 @@ class TQLVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by TQLParser#list_single_players.
     def visitList_single_players(self, ctx:TQLParser.List_single_playersContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by TQLParser#list_matches.
+    def visitList_matches(self, ctx:TQLParser.List_matchesContext):
         return self.visitChildren(ctx)
 
 

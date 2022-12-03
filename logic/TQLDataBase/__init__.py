@@ -56,6 +56,12 @@ class TQLDataBase:
             return False
         table = prettytable.from_db_cursor(self.plainQuery("SELECT * FROM singleplayer"))
         print(table)
+    def printMatches(self):
+        if not self.checkTableExist("matches"):
+            print("No matches records")
+            return False
+        table = prettytable.from_db_cursor(self.plainQuery("SELECT * FROM matches"))
+        print(table)
     def printTable(self, query):
         print(prettytable.from_db_cursor(query))
     def checkTableExist(self, table):
