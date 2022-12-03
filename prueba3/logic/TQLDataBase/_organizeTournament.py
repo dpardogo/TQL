@@ -1,11 +1,30 @@
 import math, random
 def organize(self,system,name,abbr=True):
-    functions={
-        'Knockout': lambda : self.organizeSE(name,abbr),
-        'DoubleElimination': lambda : self.organizeDE(name,abbr),
-        'RoundRobin': lambda : self.organizeRR(name,abbr),
-        'SwissSystem': lambda : self.organizeSS(name,abbr),
-    }
+    
+
+    idt=0
+    if abbr:
+        self.cursor.execute("select id from tournament where abbreviation='{}'".format(name))
+        idt=self.cursor.fetchall()[0][0]
+      
+    else:
+        self.cursor.execute("select id from tournament where name='{}'".format(name))
+        idt=self.cursor.fetchall()[0][0]
+     
+    self.cursor.execute("select contender from tournament where id={} ".format(idt))
+    contender='team' if self.cursor.fetchall()[0][0] else 'player'
+
+    query = """select id, abbreviation from {} 
+            where tournament ={} ;
+            """.format(contender,idt)  
+
+    self.cursor.execute(query)
+
+    participants=self.cursor.fetchall()
+    random.shuffle(participants)
+
+    
+
     query = """CREATE TABLE IF NOT EXISTS matches (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         P1 INTEGER ,
@@ -16,34 +35,22 @@ def organize(self,system,name,abbr=True):
         loserRound INTEGER,
         tournament INTEGER NOT NULL,
         phase INTEGER NOT NULL,
-        FOREIGN KEY(P1) REFERENCES team(id),
-        FOREIGN KEY(P2) REFERENCES team(id),
+        FOREIGN KEY(P1) REFERENCES {}(id),
+        FOREIGN KEY(P2) REFERENCES {}(id),
         FOREIGN KEY(tournament) REFERENCES tournament(id)
-        );"""
+        );""".format(contender,contender)
     self.cursor.execute(query)
     self.sqliteConnection.commit()
 
+    functions={
+        'Knockout': lambda : self.organizeSE(idt, participants),
+        'DoubleElimination': lambda : self.organizeDE(idt, participants),
+        'RoundRobin': lambda : self.organizeRR(idt, participants),
+        'SwissSystem': lambda : self.organizeSS(idt, participants),
+    }
     functions[system]()
 
-def organizeSE(self,name,abbr=True):  
-    idt=0
-    if abbr:
-        self.cursor.execute("select id from tournament where abbreviation='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-      
-    else:
-        self.cursor.execute("select id from tournament where name='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-     
-
-    query = """select id, abbreviation from team 
-            where tournament ={} ;
-            """.format(idt)
-    self.cursor.execute(query)
-
-    remaining=[i for i in self.cursor.fetchall()]
-    random.shuffle(remaining)
-
+def organizeSE(self,idt,remaining):  
     n= len(remaining)
     rounds=math.floor(math.log(n,2))
     
@@ -77,7 +84,6 @@ def organizeSE(self,name,abbr=True):
             matches+=1
             currid+=1
 
-            print(p1,p2)
             if len(p1)==1:
                 self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p1[0]))
                 p1=('NULL','W'+str(p1[0]))
@@ -95,30 +101,10 @@ def organizeSE(self,name,abbr=True):
         while len(nextRound):
             remaining.append(nextRound.pop())
     
-        
-    print(matches)
     self.sqliteConnection.commit()
     pass
 
-def organizeDE(self,name,abbr=True):
-    idt=0
-    if abbr:
-        self.cursor.execute("select id from tournament where abbreviation='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-      
-    else:
-        self.cursor.execute("select id from tournament where name='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-
-    query = """select id, abbreviation from team 
-            where tournament ={} ;
-            """.format(idt)
-    self.cursor.execute(query)
-
-    mainRound=[i for i in self.cursor.fetchall()]
-    
-    random.shuffle(mainRound)
-
+def organizeDE(self,idt,mainRound):
     n= len(mainRound)
     rounds=math.floor(math.log(n,2))
     
@@ -151,7 +137,6 @@ def organizeDE(self,name,abbr=True):
 
         while max(len(mainRound)//2,1) < len(losersRound):
             p1,p2=losersRound.pop(),losersRound.pop()
-            print(p1,p2)
             matches+=1
             currid+=1
 
@@ -168,7 +153,6 @@ def organizeDE(self,name,abbr=True):
                     self.cursor.execute("update matches set nextMatch={} where id={}".format(currid,p2[0]))
                     p2=('NULL','W'+str(p2[0]))
                 else:
-                    print('entra')
                     self.cursor.execute("update matches set loserRound={} where id={}".format(currid,-p2[0]))
                     p2=('NULL','l'+str(-p2[0]))
             
@@ -212,29 +196,12 @@ def organizeDE(self,name,abbr=True):
     p1,p2=losersRound[0],mainRound[0]
 
     query = "INSERT INTO matches (abbreviation, tournament, phase)  VALUES ( '{}', {},{})".format('W'+str(p1[0])+'-'+'W'+str(p2[0]),idt,phase) 
-    print(matches)
+    
     self.sqliteConnection.commit()
     
 
-def organizeRR(self,name,abbr=True):
+def organizeRR(self,idt,participants):
 
-    idt=0
-    if abbr:
-        self.cursor.execute("select id from tournament where abbreviation='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-      
-    else:
-        self.cursor.execute("select id from tournament where name='{}'".format(name))
-        idt=self.cursor.fetchall()[0][0]
-
-    query = """select id, abbreviation from team 
-            where tournament ={} ;
-            """.format(idt)
-    self.cursor.execute(query)
-
-    participants=[i for i in self.cursor.fetchall()]
-    
-    random.shuffle(participants)
     matches=[]
     even=True
     if len(participants)%2==1:
@@ -260,7 +227,7 @@ def organizeRR(self,name,abbr=True):
             self.cursor.execute(query)
 
     
-    print(matches)
+    
     self.sqliteConnection.commit()
     
 

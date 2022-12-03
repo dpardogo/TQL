@@ -23,7 +23,7 @@ add_query           : ADD PARTICIPANT TO t_identifier ( name | list);
 
 delete_query        : DELETE ( WORD | attributes | list) FROM t_identifier;
 
-modify_query        : MODIFY PARTICIPANT ( WORD | INTEGER) FROM t_identifier '{' pair ( ',' pair )* '}';
+modify_query        : MODIFY PARTICIPANT p_identifier FROM t_identifier '{' pair ( ',' pair )* '}';
 
 organize_query      : ORGANIZE TOURNAMENT t_identifier BY WORD ;
 
@@ -33,10 +33,10 @@ show_query          : SHOW ( PHASE | SUMMARY ) ( OF p_identifier )? FROM t_ident
 
 dtype               : WORD
                     | INTEGER
-                    | list
+                    | STRING
                     ;
 
-pair                : WORD ':' dtype;
+pair                : a_identifier ':' dtype;
 list                : '[' name ( ',' name )* ']';
 
 a_identifier        : WORD;
@@ -74,7 +74,7 @@ fragment W: [Ww];
 fragment H: [Hh];
 fragment S: [Ss];
 fragment B: [Bb];
-fragment L: [Ls];
+fragment L: [Ll];
 
 fragment DIGIT      : [0-9] ;
 fragment LOWERCASE  : [a-z] ;

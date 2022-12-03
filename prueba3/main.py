@@ -16,7 +16,6 @@ def main(argv):
     tree = parser.program()
     output = open("output.txt","w")
 
-    print(tree)
     obj=visitor(output)
     obj.visit(tree)
         

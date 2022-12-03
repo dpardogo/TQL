@@ -60,32 +60,10 @@ class visitor(TQLVisitor):
         return super().visitCreate_query(ctx)
 
 
-    def visitDelete_query(self, ctx: TQLParser.Delete_queryContext):
-        tourn=self.visit(ctx.t_identifier)
-        todel=None
-        if ctx.WORD()!= None:
-            todel=[ctx.WORD().getText()]
-        elif ctx.list_()!= None:
-            todel=self.visit(ctx.list_())
-
-        if todel!=None:
-            deleteParticipant = TQLDataBase()
-            deleteParticipant.deleteParticipant(tourn,todel)
-            deleteParticipant.closeConnection()
-            return
-        else:
-            todel=self.visit(ctx.attributes)
-            deleteAtributes = TQLDataBase()
-            deleteAtributes.deleteAtributes(tourn,todel)
-            deleteAtributes.closeConnection()
-            return
-
-
     def visitOrganize_query(self, ctx: TQLParser.Organize_queryContext):
         tid=self.visit(ctx.t_identifier())
         system=ctx.WORD().getText()
 
-        print(system,tid[0],tid[1])
         organizeTournament = TQLDataBase()
         organizeTournament.organize(system,tid[0],tid[1])
         organizeTournament.closeConnection()
@@ -107,6 +85,19 @@ class visitor(TQLVisitor):
 
         return super().visitReport_query(ctx)
 
+    def visitModify_query(self, ctx: TQLParser.Modify_queryContext):
+        team=self.visit(ctx.p_identifier())
+        tourn=self.visit(ctx.t_identifier())
+        dic=dict([self.visit(i) for i in ctx.pair() ])
+
+        modifyParticipants = TQLDataBase()
+        modifyParticipants.modifyParticipants(team[0],team[1],tourn[0],tourn[1],dic)
+        modifyParticipants.closeConnection()
+
+        return super().visitModify_query(ctx)
+
+
+    #-------------------------------Reglas intermedias------------------------------
 
 
     def visitA_identifier(self, ctx: TQLParser.A_identifierContext):
@@ -129,12 +120,18 @@ class visitor(TQLVisitor):
         for i in ctx.name():
             array.append(self.visit(i))
         return array
-   
-    def visitAttributes(self, ctx: TQLParser.AttributesContext):
-        array=[]
-        for i in ctx.WORD():
-            array.append(i.getText())
-        return array
+    
+    def visitPair(self, ctx: TQLParser.PairContext):
+        return (self.visit(ctx.a_identifier()),self.visit(ctx.dtype()))
+
+    def visitDtype(self, ctx: TQLParser.DtypeContext):
+        if ctx.WORD()!=None:
+            return '"'+ctx.WORD().getText()+'"'
+        elif ctx.INTEGER!=None:
+            return ctx.INTEGER().getText()
+        else:
+            return ctx.STRING().getText()
+        
         
     def visitName(self, ctx: TQLParser.NameContext):
         abr=''
