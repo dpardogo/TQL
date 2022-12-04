@@ -73,13 +73,23 @@ Cargar comandos desde archivo : LOAD FROM PATH STRING;
 
 # Donde:
 attributes          : '(' WORD ( ',' WORD )* ')';
+
 list                : '[' name ( ',' name )* ']';
+
 name				: STRING ( '(' abbr ')' )?;
+
 abbr                : WORD;
+
 STRING              :'"' ~["]+ '"';
+
 WORD				: (LOWERCASE | UPPERCASE)(LOWERCASE | UPPERCASE| DIGIT | '_')* ;
+
 LOWERCASE           : [a-z] ;
+
 UPPERCASE           : [A-Z] ;
+
 a_identifier        : WORD;
+
 t_identifier        : STRING | WORD;
+
 p_identifier        : STRING | WORD;
