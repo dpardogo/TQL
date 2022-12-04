@@ -12,7 +12,7 @@ def organize(self,system,name,abbr=True):
         idt=self.cursor.fetchall()[0][0]
      
     self.cursor.execute("select contender from tournament where id={} ".format(idt))
-    contender='team' if self.cursor.fetchall()[0][0] else 'player'
+    contender='team' if self.cursor.fetchall()[0][0] else 'singleplayer'
 
     query = """select id, abbreviation from {} 
             where tournament ={} ;

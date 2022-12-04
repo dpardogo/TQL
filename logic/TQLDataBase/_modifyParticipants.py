@@ -9,7 +9,7 @@ def modifyParticipants(self,team,abbr1,tournament,abbr2,dic):
         idt=self.cursor.fetchall()[0][0]
 
     self.cursor.execute("select contender from tournament where id={} ".format(idt))
-    contender='team' if self.cursor.fetchall()[0][0] else 'player'
+    contender='team' if self.cursor.fetchall()[0][0] else 'singleplayer'
     
     idteam=0
     if abbr1:
